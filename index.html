@@ -52,6 +52,11 @@ header{
   padding: 14px 32px;
 }
 .logo-img{height:40px; width:auto; display:block;}
+.brand{display:flex; align-items:center; gap:12px;}
+.brand-icon{height:40px; width:auto; display:block;}
+.brand-text{display:flex; flex-direction:column; line-height:1.15;}
+.brand-name{font-family:var(--mono); font-weight:600; font-size:16px; color:var(--navy); letter-spacing:0.01em;}
+.brand-sub{font-family:var(--mono); font-weight:500; font-size:10px; color:var(--navy); opacity:0.6; letter-spacing:0.12em; text-transform:uppercase; margin-top:2px;}
 nav ul{list-style:none; display:flex; gap:26px;}
 nav a{
   font-family: var(--mono); font-size: 12.5px; letter-spacing:0.03em;
@@ -243,7 +248,13 @@ footer{
 
 <header>
   <div class="nav-wrap">
-    <img class="logo-img" src="assets/logo.png" alt="Theta Power Systems International">
+    <a class="brand" href="#" aria-label="Theta Power Systems International">
+      <img class="brand-icon" src="assets/logo-icon.png" alt="">
+      <span class="brand-text">
+        <span class="brand-name">Theta Power Systems</span>
+        <span class="brand-sub">International</span>
+      </span>
+    </a>
     <nav><ul>
       <li><a href="#about">About</a></li>
       <li><a href="#solutions">Solutions</a></li>
@@ -419,6 +430,78 @@ const io = new IntersectionObserver((entries)=>{
 document.querySelectorAll('.datasheet, .market-cell, .spec-item').forEach(el=>{
   el.classList.add('reveal'); io.observe(el);
 });
+</script>
+
+<div id="tps-switcher" data-current="index.html">
+  <button id="tps-switcher-toggle" type="button" aria-label="Switch design proposal">
+    <span class="tps-dot"></span> Designs
+  </button>
+  <div id="tps-switcher-panel">
+    <div class="tps-switcher-head">Design Proposals</div>
+    <a href="index.html" data-key="v2"><span class="tps-k">V2</span><span class="tps-l">Datasheet Navy</span></a>
+    <a href="index-v3.html" data-key="v3"><span class="tps-k">V3</span><span class="tps-l">Editorial Lime</span></a>
+    <a href="index-v4.html" data-key="v4"><span class="tps-k">V4</span><span class="tps-l">Swiss Blueprint</span></a>
+    <a href="index-v5.html" data-key="v5"><span class="tps-k">V5</span><span class="tps-l">Four Pillars</span></a>
+  </div>
+</div>
+<style>
+#tps-switcher{
+  position:fixed; right:20px; bottom:20px; z-index:9999;
+  font-family:'IBM Plex Mono',monospace;
+}
+#tps-switcher-toggle{
+  display:flex; align-items:center; gap:8px;
+  background:#0B1220; color:#F5F6F5;
+  border:1px solid rgba(255,255,255,0.18);
+  padding:12px 16px; border-radius:100px;
+  font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase;
+  cursor:pointer; box-shadow:0 10px 30px rgba(0,0,0,0.35);
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+#tps-switcher-toggle:hover{background:#152036; transform:translateY(-1px);}
+#tps-switcher .tps-dot{width:7px; height:7px; border-radius:50%; background:#06B153; box-shadow:0 0 8px #06B153; flex:none;}
+#tps-switcher-panel{
+  position:absolute; right:0; bottom:calc(100% + 10px);
+  width:230px; background:#0B1220; border:1px solid rgba(255,255,255,0.14);
+  border-radius:12px; padding:8px; box-shadow:0 20px 50px rgba(0,0,0,0.45);
+  opacity:0; visibility:hidden; transform:translateY(6px);
+  transition:opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+}
+#tps-switcher-panel.open{opacity:1; visibility:visible; transform:translateY(0);}
+.tps-switcher-head{
+  font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase;
+  color:rgba(245,246,245,0.5); padding:8px 10px 6px;
+}
+#tps-switcher-panel a{
+  display:flex; align-items:center; gap:10px;
+  padding:9px 10px; border-radius:8px; text-decoration:none;
+  color:#F5F6F5; font-size:12.5px;
+  transition:background 0.15s ease;
+}
+#tps-switcher-panel a:hover{background:rgba(255,255,255,0.08);}
+#tps-switcher-panel a.active{background:rgba(6,177,83,0.16);}
+#tps-switcher-panel a .tps-k{
+  font-weight:600; color:#06B153; font-size:11px; width:24px; flex:none;
+}
+#tps-switcher-panel a.active .tps-k{color:#A6FF3D;}
+#tps-switcher-panel a .tps-l{opacity:0.85;}
+</style>
+<script>
+(function(){
+  var path = (location.pathname.split('/').pop() || 'index.html');
+  var panel = document.getElementById('tps-switcher-panel');
+  var toggle = document.getElementById('tps-switcher-toggle');
+  panel.querySelectorAll('a').forEach(function(a){
+    if(a.getAttribute('href') === path){ a.classList.add('active'); }
+  });
+  toggle.addEventListener('click', function(e){
+    e.stopPropagation();
+    panel.classList.toggle('open');
+  });
+  document.addEventListener('click', function(e){
+    if(!panel.contains(e.target) && e.target !== toggle){ panel.classList.remove('open'); }
+  });
+})();
 </script>
 
 </body>

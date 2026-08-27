@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Theta Power Systems — Redesign Proposal v5</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
+
+:root{
+  --paper: #F5F6F5;
+  --white: #FFFFFF;
+  --navy: #012060;
+  --navy-2: #01173F;
+  --navy-3: #010F2B;
+  --green: #06B153;
+  --green-dark: #049245;
+  --red: #E8271A;
+  --ink: #0E1526;
+  --ink-soft: rgba(14,21,38,0.64);
+  --line: rgba(1,32,96,0.14);
+  --sans: 'Manrope', sans-serif;
+  --mono: 'IBM Plex Mono', monospace;
+}
+
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family: var(--sans);
+  background: var(--paper);
+  color: var(--ink);
+  line-height:1.6;
+  overflow-x:hidden;
+}
+a{color:inherit; text-decoration:none;}
+img{max-width:100%; display:block;}
+.wrap{max-width:1240px; margin:0 auto; padding-left:32px; padding-right:32px;}
+.eyebrow{
+  font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--green-dark);
+}
+
+/* ---------- HEADER ---------- */
+header{
+  position: sticky; top:0; z-index: 50;
+  background: rgba(245,246,245,0.94);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+.nav-wrap{
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 15px 0;
+}
+.logo-img{height:36px; width:auto; display:block;}
+.brand{display:flex; align-items:center; gap:12px;}
+.brand-icon{height:36px; width:auto; display:block;}
+.brand-text{display:flex; flex-direction:column; line-height:1.15;}
+.brand-name{font-family:var(--sans); font-weight:800; font-size:16px; color:var(--navy); letter-spacing:-0.01em;}
+.brand-sub{font-family:var(--mono); font-weight:500; font-size:10px; color:var(--green-dark); letter-spacing:0.12em; text-transform:uppercase; margin-top:2px;}
+nav ul{list-style:none; display:flex; gap:28px;}
+nav a{
+  font-family: var(--mono); font-size: 12.5px; letter-spacing:0.03em;
+  color: var(--navy); opacity:0.72; text-transform:uppercase;
+  transition: opacity 0.2s, color 0.2s;
+  padding-bottom:2px; border-bottom:1px solid transparent;
+}
+nav a:hover{opacity:1; color:var(--green-dark); border-color:var(--green-dark);}
+.nav-cta{
+  font-family:var(--mono); font-size:12px; letter-spacing:0.05em;
+  color:var(--white); background:var(--navy);
+  padding:11px 20px; border-radius:4px; text-transform:uppercase; font-weight:600;
+  transition: background 0.2s;
+}
+.nav-cta:hover{background:var(--green);}
+@media(max-width:900px){ nav ul{display:none;} }
+
+/* ---------- HERO ---------- */
+.hero{
+  background: var(--navy);
+  position:relative;
+  padding: 84px 0 0;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';
+  position:absolute; inset:0;
+  background-image:
+    radial-gradient(circle at 82% 15%, rgba(6,177,83,0.22), transparent 50%),
+    radial-gradient(circle at 10% 90%, rgba(6,177,83,0.12), transparent 45%);
+}
+.hero-inner{ position:relative; }
+.hero-tag{
+  display:inline-flex; align-items:center; gap:10px; flex-wrap:wrap;
+  font-family:var(--mono); font-size:11.5px; letter-spacing:0.1em;
+  color: rgba(255,255,255,0.75); text-transform:uppercase;
+  margin-bottom:26px;
+}
+.hero-tag b{color:var(--green); font-weight:600;}
+.hero-tag .sep{opacity:0.4;}
+
+h1{
+  font-family: var(--sans); font-weight:800;
+  font-size: clamp(32px, 4.6vw, 58px);
+  color: var(--white); line-height:1.08; letter-spacing:-0.02em;
+  max-width:880px;
+}
+h1 .accent{color:var(--green);}
+.hero p.sub{
+  color: rgba(255,255,255,0.72); font-size:17px; max-width:600px; margin-top:22px;
+}
+.btn-row{display:flex; gap:14px; flex-wrap:wrap; margin-top:34px;}
+.btn{
+  font-family:var(--mono); font-size:12.5px; letter-spacing:0.05em; text-transform:uppercase;
+  padding:13px 22px; border-radius:4px; font-weight:600;
+  display:inline-flex; align-items:center; gap:8px;
+  transition:transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+.btn:hover{transform:translateY(-1px);}
+.btn-primary{background:var(--green); color:var(--navy-3);}
+.btn-primary:hover{box-shadow:0 8px 22px rgba(6,177,83,0.35);}
+.btn-ghost{border:1px solid rgba(255,255,255,0.28); color:var(--white);}
+.btn-ghost:hover{border-color:var(--green); background:rgba(6,177,83,0.08);}
+
+/* pillar strip inside hero */
+.pillar-strip{
+  margin-top:64px;
+  display:grid; grid-template-columns:repeat(4,1fr);
+  border-top:1px solid rgba(255,255,255,0.14);
+  position:relative;
+}
+@media(max-width:900px){ .pillar-strip{grid-template-columns:repeat(2,1fr);} }
+.pillar-strip a{
+  padding:26px 28px; border-right:1px solid rgba(255,255,255,0.14);
+  border-bottom:1px solid rgba(255,255,255,0.14);
+  display:block; transition:background 0.2s;
+}
+.pillar-strip a:hover{background:rgba(6,177,83,0.08);}
+.pillar-strip a:nth-child(4n){border-right:none;}
+@media(max-width:900px){ .pillar-strip a:nth-child(2n){border-right:none;} .pillar-strip a:nth-child(4n){border-right:1px solid rgba(255,255,255,0.14);} }
+.pillar-strip .pnum{font-family:var(--mono); font-size:11px; color:var(--green); letter-spacing:0.08em;}
+.pillar-strip .plabel{font-family:var(--sans); font-weight:700; color:var(--white); font-size:15.5px; margin-top:8px;}
+.pillar-strip .pdesc{font-family:var(--sans); color:rgba(255,255,255,0.58); font-size:12.5px; margin-top:6px;}
+
+/* ---------- SECTION GENERIC ---------- */
+section.block{ padding: 88px 0; }
+.section-head{ max-width:660px; margin-bottom:52px; }
+.section-head h2{
+  font-family:var(--sans); font-size:clamp(24px,3vw,36px); font-weight:800;
+  margin-top:10px; letter-spacing:-0.01em; color:var(--navy);
+}
+.section-head p{ margin-top:14px; color:var(--ink-soft); font-size:15.5px; max-width:540px;}
+
+/* ---------- CAPABILITIES (4 pillars, full detail) ---------- */
+.cap-grid{
+  display:grid; grid-template-columns:repeat(2,1fr); gap:20px;
+}
+@media(max-width:860px){ .cap-grid{grid-template-columns:1fr;} }
+.cap-card{
+  background: var(--white);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:30px 28px;
+  position:relative;
+}
+.cap-card .code{
+  font-family:var(--mono); font-size:11px; color:var(--green-dark); letter-spacing:0.08em;
+  margin-bottom:12px; text-transform:uppercase; display:flex; align-items:center; justify-content:space-between;
+}
+.cap-card .code .n{color:var(--ink-soft);}
+.cap-card h3{font-family:var(--sans); font-size:20px; margin-bottom:10px; font-weight:800; color:var(--navy);}
+.cap-card p{font-size:14.5px; color:var(--ink-soft); margin-bottom:16px;}
+.cap-card ul{list-style:none; font-family:var(--mono); font-size:12px; color:var(--ink-soft);}
+.cap-card li{padding:6px 0; border-top:1px dashed var(--line);}
+.cap-card li:first-child{border-top:none;}
+.cap-card li::before{content:'→ '; color:var(--green-dark);}
+.cap-card.accent-red .code{color:var(--red);}
+.cap-card.accent-red li::before{color:var(--red);}
+
+/* ---------- TECH SHOWCASE ---------- */
+.tech-section{ background:var(--navy); border-radius:14px; }
+.tech-section .wrap{ padding-top:76px; padding-bottom:76px; }
+.tech-section .eyebrow{color:var(--green);}
+.tech-section h2{color:var(--white);}
+.tech-section p{color:rgba(255,255,255,0.7);}
+.tech-showcase{
+  background: rgba(255,255,255,0.05);
+  border-radius:10px;
+  padding: 36px;
+  border:1px solid rgba(255,255,255,0.14);
+  margin-top:8px;
+}
+.tech-showcase img{border-radius:4px;}
+
+/* ---------- PROCESS ---------- */
+.process-strip{
+  display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
+  background: var(--line); border:1px solid var(--line); border-radius:10px; overflow:hidden;
+}
+@media(max-width:860px){ .process-strip{grid-template-columns:repeat(2,1fr);} }
+.process-cell{ background:var(--white); padding:26px 22px; }
+.process-cell .pn{font-family:var(--mono); font-size:22px; font-weight:700; color:var(--green-dark);}
+.process-cell h4{font-family:var(--sans); font-size:15px; font-weight:700; color:var(--navy); margin:10px 0 6px;}
+.process-cell p{font-size:13px; color:var(--ink-soft);}
+
+/* ---------- MARKETS ---------- */
+.markets-strip{ background: var(--navy-2); border-radius:14px; }
+.markets-grid{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+  background: rgba(6,177,83,0.16);
+  border:1px solid rgba(6,177,83,0.16);
+  margin-top:44px;
+}
+@media(max-width:800px){ .markets-grid{grid-template-columns:1fr;} }
+.market-cell{ background: var(--navy-3); padding:32px 28px; }
+.market-cell .tag{font-family:var(--mono); font-size:10.5px; color:var(--green); letter-spacing:0.1em; text-transform:uppercase; opacity:0.9;}
+.market-cell h4{font-family:var(--sans); color:var(--white); font-size:18px; margin:10px 0 10px; font-weight:700;}
+.market-cell p{color:var(--white); opacity:0.6; font-size:13.5px;}
+.markets-head{ padding: 76px 0 0; }
+.markets-head .eyebrow{color:var(--green);}
+.markets-head h2{color:var(--white); font-family:var(--sans); font-size:clamp(24px,3vw,32px); margin-top:10px; font-weight:800;}
+.markets-head p{color:rgba(255,255,255,0.65); margin-top:12px; max-width:540px;}
+.markets-strip .wrap{padding-bottom:76px;}
+
+/* ---------- CONTACT ---------- */
+.contact-wrap{ background: var(--white); border:1px solid var(--line); border-radius:14px; padding: 64px; }
+@media(max-width:700px){ .contact-wrap{padding:36px 26px;} }
+.contact-inner{
+  display:grid; grid-template-columns:1fr 1fr; gap:56px;
+}
+@media(max-width:800px){ .contact-inner{grid-template-columns:1fr;} }
+.contact-inner h2{font-family:var(--sans); color:var(--navy); font-size:clamp(24px,3vw,32px); margin-bottom:18px; font-weight:800;}
+.office{margin-bottom:22px; font-family:var(--mono); font-size:13px; color:var(--ink-soft);}
+.office .oh{color:var(--green-dark); font-size:11px; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:6px; font-weight:600;}
+.form-field{margin-bottom:14px;}
+.form-field input, .form-field textarea{
+  width:100%; background:var(--paper); border:1px solid var(--line);
+  color:var(--ink); font-family:var(--sans); font-size:14px; padding:12px 14px; border-radius:6px;
+}
+.form-field input::placeholder, .form-field textarea::placeholder{color:rgba(14,21,38,0.4);}
+.form-field textarea{min-height:100px; resize:vertical;}
+
+/* ---------- FOOTER ---------- */
+footer{
+  padding: 30px 0 34px; text-align:center;
+  font-family:var(--mono); font-size:11.5px; color:var(--ink-soft); letter-spacing:0.04em;
+}
+
+.reveal{opacity:0; transform:translateY(16px); transition:opacity 0.6s ease, transform 0.6s ease;}
+.reveal.in{opacity:1; transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav-wrap">
+    <a class="brand" href="#" aria-label="Theta Power Systems International">
+      <img class="brand-icon" src="assets/logo-icon.png" alt="">
+      <span class="brand-text">
+        <span class="brand-name">Theta Power Systems</span>
+        <span class="brand-sub">International</span>
+      </span>
+    </a>
+    <nav><ul>
+      <li><a href="#capabilities">Capabilities</a></li>
+      <li><a href="#tech">Technology</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#markets">Markets</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul></nav>
+    <a class="nav-cta" href="#contact">Talk to an engineer</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-inner">
+    <div class="hero-tag">
+      <b>Energy Conversion</b><span class="sep">/</span>
+      <b>HMI</b><span class="sep">/</span>
+      <b>Connectivity &amp; IoT</span></b><span class="sep">/</span>
+      <b>Hardware Design</b>
+    </div>
+    <h1>One design cycle for the <span class="accent">whole electronic product.</span></h1>
+    <p class="sub">Theta engineers embedded systems end to end: power conversion, human-machine interfaces, connectivity, and the hardware that carries them — scoped and built together, not as separate vendors.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="#contact">Start a project →</a>
+      <a class="btn btn-ghost" href="#capabilities">See our capabilities</a>
+    </div>
+
+    <div class="pillar-strip">
+      <a href="#cap-energy">
+        <div class="pnum">01</div>
+        <div class="plabel">Energy Conversion</div>
+        <div class="pdesc">Sensorless motor control &amp; power electronics</div>
+      </a>
+      <a href="#cap-hmi">
+        <div class="pnum">02</div>
+        <div class="plabel">HMI</div>
+        <div class="pdesc">Embedded UI, displays, panels &amp; controls</div>
+      </a>
+      <a href="#cap-iot">
+        <div class="pnum">03</div>
+        <div class="plabel">Connectivity &amp; IoT</div>
+        <div class="pdesc">Wireless links, cloud telemetry, OTA</div>
+      </a>
+      <a href="#cap-hw">
+        <div class="pnum">04</div>
+        <div class="plabel">Hardware Design</div>
+        <div class="pdesc">Schematic, PCB, DFM &amp; certification</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="capabilities">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">What We Build</div>
+      <h2>Four disciplines, one program.</h2>
+      <p>Most electronic products fail at the seams between teams. We keep power, interface, connectivity, and hardware under one roof so the tradeoffs get made together.</p>
+    </div>
+    <div class="cap-grid">
+      <div class="cap-card reveal" id="cap-energy">
+        <div class="code"><span>Energy Conversion</span><span class="n">01</span></div>
+        <h3>Power electronics &amp; motor control</h3>
+        <p>Sensorless DTFC vector control and power-stage design that hold efficiency from low to high speed while cutting BOM cost.</p>
+        <ul>
+          <li>Sensorless torque &amp; flux control (DTFC)</li>
+          <li>Inverter &amp; power-stage design</li>
+          <li>Efficiency, thermal &amp; EMI optimization</li>
+        </ul>
+      </div>
+      <div class="cap-card reveal" id="cap-hmi">
+        <div class="code"><span>HMI</span><span class="n">02</span></div>
+        <h3>Human-machine interfaces</h3>
+        <p>Firmware and interaction design for the panel, display, or app the end user actually touches — built to survive production, not just a demo.</p>
+        <ul>
+          <li>Touch, button &amp; rotary control firmware</li>
+          <li>Display &amp; graphics driver integration</li>
+          <li>UX flows tuned for industrial &amp; appliance use</li>
+        </ul>
+      </div>
+      <div class="cap-card accent-red reveal" id="cap-iot">
+        <div class="code"><span>Connectivity &amp; IoT</span><span class="n">03</span></div>
+        <h3>Wireless &amp; cloud connectivity</h3>
+        <p>Devices that report, update, and get diagnosed remotely — Wi-Fi, BLE, and cellular links wired into a cloud telemetry pipeline.</p>
+        <ul>
+          <li>Wi-Fi / BLE / cellular module integration</li>
+          <li>Cloud telemetry &amp; remote diagnostics</li>
+          <li>Secure OTA firmware update pipelines</li>
+        </ul>
+      </div>
+      <div class="cap-card accent-red reveal" id="cap-hw">
+        <div class="code"><span>Hardware Design</span><span class="n">04</span></div>
+        <h3>Schematic, PCB &amp; certification</h3>
+        <p>The physical layer everything above runs on — designed for manufacturability and taken through the regulatory approvals that let it ship.</p>
+        <ul>
+          <li>Schematic capture &amp; PCB layout</li>
+          <li>DFM / DFT for volume manufacturing</li>
+          <li>Regulatory &amp; safety certification support</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <section class="block tech-section" id="tech">
+    <div class="wrap">
+      <div class="section-head" style="max-width:100%;">
+        <div class="eyebrow">Energy Conversion, In Depth</div>
+        <h2>DTFC Vector Control</h2>
+        <p>Our proprietary Direct Torque and Flux Control topology, visualized: rotor field geometry, d/q vector decomposition, and phase current waveforms in a single view.</p>
+      </div>
+      <div class="tech-showcase reveal">
+        <img src="assets/dtfc-vector-control.png" alt="DTFC Vector Control diagram">
+      </div>
+    </div>
+  </section>
+</div>
+
+<section class="block" id="process">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">How We Engage</div>
+      <h2>Requirements to certified production.</h2>
+      <p>A single program spans all four disciplines, so the handoffs that usually cause rework happen inside one team instead of between vendors.</p>
+    </div>
+    <div class="process-strip">
+      <div class="process-cell reveal"><div class="pn">01</div><h4>Architecture</h4><p>System partitioning across power, HMI, connectivity &amp; hardware.</p></div>
+      <div class="process-cell reveal"><div class="pn">02</div><h4>Design</h4><p>Firmware, control algorithms, schematic &amp; PCB in parallel.</p></div>
+      <div class="process-cell reveal"><div class="pn">03</div><h4>Validation</h4><p>Bench, EMI, thermal, and regulatory pre-compliance testing.</p></div>
+      <div class="process-cell reveal"><div class="pn">04</div><h4>Production</h4><p>Certification, DFM sign-off, and manufacturing ramp-up support.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="markets-strip" id="markets">
+    <div class="wrap markets-head">
+      <div class="eyebrow">Markets Served</div>
+      <h2>Where our systems run today.</h2>
+      <p>The same four-discipline approach, applied across the products people rely on every day.</p>
+    </div>
+    <div class="wrap">
+      <div class="markets-grid">
+        <div class="market-cell reveal">
+          <div class="tag">01 · Home Appliances</div>
+          <h4>Refrigerators, HVAC, washers</h4>
+          <p>Motor control, panel UI, and connected diagnostics for refrigerators, AC units, washing machines, dishwashers, and vacuum cleaners.</p>
+        </div>
+        <div class="market-cell reveal">
+          <div class="tag">02 · Compressor, Pump &amp; Fan</div>
+          <h4>Noise, vibration &amp; remote monitoring</h4>
+          <p>Control algorithms tuned to reduce acoustic and mechanical noise, with optional cloud telemetry for fleet monitoring.</p>
+        </div>
+        <div class="market-cell reveal">
+          <div class="tag">03 · Automotive &amp; EV</div>
+          <h4>High torque, connected drivetrains</h4>
+          <p>Drivetrain control engineered for torque density and efficiency, with the hardware and connectivity EV platforms demand.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="block" id="contact">
+  <div class="wrap">
+    <div class="contact-wrap">
+      <div class="contact-inner">
+        <div>
+          <div class="eyebrow">Contact</div>
+          <h2>Let's scope your project.</h2>
+          <div class="office">
+            <div class="oh">Headquarters &amp; Sales</div>
+            7800 North Dallas Parkway, Suite 310<br>Plano, TX 75024, USA<br>+1 (972) 814-3990
+          </div>
+          <div class="office">
+            <div class="oh">Engineering Office</div>
+            Joinville, SC, Brazil<br>+55 47 99972-7855
+          </div>
+        </div>
+        <div>
+          <div class="form-field"><input type="text" placeholder="Your name"></div>
+          <div class="form-field"><input type="email" placeholder="Your email"></div>
+          <div class="form-field"><input type="text" placeholder="Subject"></div>
+          <div class="form-field"><textarea placeholder="Your message"></textarea></div>
+          <a class="btn btn-primary" href="#" style="width:100%; justify-content:center; background:var(--navy); color:var(--white);">Send message</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>THETA POWER SYSTEMS INTERNATIONAL — REDESIGN PROPOSAL / CONCEPT MOCKUP v5</footer>
+
+<script>
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
+},{threshold:0.15});
+document.querySelectorAll('.reveal').forEach(el=>{ io.observe(el); });
+</script>
+
+<div id="tps-switcher" data-current="index-v5.html">
+  <button id="tps-switcher-toggle" type="button" aria-label="Switch design proposal">
+    <span class="tps-dot"></span> Designs
+  </button>
+  <div id="tps-switcher-panel">
+    <div class="tps-switcher-head">Design Proposals</div>
+    <a href="index.html" data-key="v2"><span class="tps-k">V2</span><span class="tps-l">Datasheet Navy</span></a>
+    <a href="index-v3.html" data-key="v3"><span class="tps-k">V3</span><span class="tps-l">Editorial Lime</span></a>
+    <a href="index-v4.html" data-key="v4"><span class="tps-k">V4</span><span class="tps-l">Swiss Blueprint</span></a>
+    <a href="index-v5.html" data-key="v5"><span class="tps-k">V5</span><span class="tps-l">Four Pillars</span></a>
+  </div>
+</div>
+<style>
+#tps-switcher{
+  position:fixed; right:20px; bottom:20px; z-index:9999;
+  font-family:'IBM Plex Mono',monospace;
+}
+#tps-switcher-toggle{
+  display:flex; align-items:center; gap:8px;
+  background:#0B1220; color:#F5F6F5;
+  border:1px solid rgba(255,255,255,0.18);
+  padding:12px 16px; border-radius:100px;
+  font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase;
+  cursor:pointer; box-shadow:0 10px 30px rgba(0,0,0,0.35);
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+#tps-switcher-toggle:hover{background:#152036; transform:translateY(-1px);}
+#tps-switcher .tps-dot{width:7px; height:7px; border-radius:50%; background:#06B153; box-shadow:0 0 8px #06B153; flex:none;}
+#tps-switcher-panel{
+  position:absolute; right:0; bottom:calc(100% + 10px);
+  width:230px; background:#0B1220; border:1px solid rgba(255,255,255,0.14);
+  border-radius:12px; padding:8px; box-shadow:0 20px 50px rgba(0,0,0,0.45);
+  opacity:0; visibility:hidden; transform:translateY(6px);
+  transition:opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+}
+#tps-switcher-panel.open{opacity:1; visibility:visible; transform:translateY(0);}
+.tps-switcher-head{
+  font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase;
+  color:rgba(245,246,245,0.5); padding:8px 10px 6px;
+}
+#tps-switcher-panel a{
+  display:flex; align-items:center; gap:10px;
+  padding:9px 10px; border-radius:8px; text-decoration:none;
+  color:#F5F6F5; font-size:12.5px;
+  transition:background 0.15s ease;
+}
+#tps-switcher-panel a:hover{background:rgba(255,255,255,0.08);}
+#tps-switcher-panel a.active{background:rgba(6,177,83,0.16);}
+#tps-switcher-panel a .tps-k{
+  font-weight:600; color:#06B153; font-size:11px; width:24px; flex:none;
+}
+#tps-switcher-panel a.active .tps-k{color:#A6FF3D;}
+#tps-switcher-panel a .tps-l{opacity:0.85;}
+</style>
+<script>
+(function(){
+  var path = (location.pathname.split('/').pop() || 'index.html');
+  var panel = document.getElementById('tps-switcher-panel');
+  var toggle = document.getElementById('tps-switcher-toggle');
+  panel.querySelectorAll('a').forEach(function(a){
+    if(a.getAttribute('href') === path){ a.classList.add('active'); }
+  });
+  toggle.addEventListener('click', function(e){
+    e.stopPropagation();
+    panel.classList.toggle('open');
+  });
+  document.addEventListener('click', function(e){
+    if(!panel.contains(e.target) && e.target !== toggle){ panel.classList.remove('open'); }
+  });
+})();
+</script>
+
+</body>
+</html>
